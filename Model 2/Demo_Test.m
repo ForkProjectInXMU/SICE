@@ -17,7 +17,9 @@ model = 'Twostage.prototxt';
 net = caffe.Net(model, weights,'test');
 
 
+% img_In为[H, W, 3]的图数据 
 img_In = imread('Test/79.JPG'); 
+% bicubic为双三次插值，一种插值方法，3/5代表把图像大小变为原来的五分之三，小数部分用进1法
 img_In = imresize(img_In, 3/5, 'bicubic');
 img_In = modcrop(img_In, 4);
 
@@ -41,6 +43,7 @@ if (H>1200 && W>1200)
 end
 
 
+% 这里开始就是把拆开的图片数据放进net里处理并输出结果，我们不需要
 net.blobs('data').reshape([size(data,1) size(data,2), 3, 1]);
 net.reshape();
 

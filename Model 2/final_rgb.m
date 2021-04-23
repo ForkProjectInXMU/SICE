@@ -1,0 +1,32 @@
+clear;
+clc;
+close all;
+warning off;
+
+img_In = imread('./79.JPG');
+I = double(img_In);
+I = I./255.0;
+R = img_In(:, :, 1);
+G = img_In(:, :, 2);
+B = img_In(:, :, 3);
+R = double(R);
+G = double(G);
+B = double(B);
+R = R./255.0;
+G = G./255.0;
+B = B./255.0;
+% disp(wlsFilter(R,2,2));
+% 发现结果是浮点数，说明这个im2single应该只是为了校准归一化吧，怕归一化不准
+% lumin_R = im2single(wlsFilter(R, 2, 2));
+% lumin_G = im2single(wlsFilter(G, 2, 2));
+% lumin_B = im2single(wlsFilter(B, 2, 2));
+% lumin = cat(3, lumin_R, lumin_G);
+% lumin = cat(3, lumin, lumin_B);
+lumin_R = wlsFilter(R, 2, 2);
+lumin_G = wlsFilter(G, 2, 2);
+lumin_B = wlsFilter(B, 2, 2);
+lumin = cat(3, lumin_R, lumin_G);
+lumin = im2single(cat(3, lumin, lumin_B));
+detail = im2single(I - lumin);
+imwrite(lumin,'result1.png');
+imwrite(detail,'result2.png');
